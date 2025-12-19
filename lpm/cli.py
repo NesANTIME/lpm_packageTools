@@ -11,7 +11,7 @@ from lpm.source.animations import animationsBAR_message
 LOCAL_SOURCES = os.path.expanduser("~/.lpm")
 SOURCE_REGISTRY = ".lpm_Userpackage"
 
-DATA = { "icon": [ "┬  ┌─┐┌┬┐", "│  ├─┘│││", "┴─┘┴  ┴ ┴" ], "version": "1.1.0" }
+DATA = { "icon": [ "┬  ┌─┐┌┬┐", "│  ├─┘│││", "┴─┘┴  ┴ ┴" ], "version": "1.2.0" }
 
 
 # ~~~ Funciones Auxiliares ~~~

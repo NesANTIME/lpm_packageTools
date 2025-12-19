@@ -2,7 +2,7 @@
 
 clear
 echo "[!] PROGRAMA DE INSTALACION DE LPM PACKET"
-echo " By NesAnTime - v1.0.0"
+echo " By NesAnTime - v1.2.0"
 echo " "
 
 if command -v pipx &> /dev/null 
