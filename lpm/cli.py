@@ -2,61 +2,78 @@ import os
 import sys
 import json
 import argparse
-from importlib import resources
 from lpm.source.logic_conection import autentificacion_local
-from lpm.source.logic_local import search_packageLpm
+from lpm.source.logic_local import search_packageLpm, save_lpm
 from lpm.source.animations import animationsBAR_message
+
+
+# ~~ Variables Globales 
+LOCAL_SOURCES = os.path.expanduser("~/.lpm")
+SOURCE_REGISTRY = ".lpm_Userpackage"
+
+DATA = { "icon": [ "┬  ┌─┐┌┬┐", "│  ├─┘│││", "┴─┘┴  ┴ ┴" ], "version": "1.1.0" }
 
 
 # ~~~ Funciones Auxiliares ~~~
 
-def load_json():
-    try:
-        with resources.files("lpm.source") \
-            .joinpath("config.json") \
-            .open("r", encoding="utf-8") as f:
-            return json.load(f)
-    except FileNotFoundError:
-        print("[!] ERROR... NO SE ENCUENTRAN COMPONENTES INTERNOS DE LPM")
-        sys.exit(1)
-
 def icon():
-    data = load_json()
-    for i in data["icon"]:
-        print(f"{' '*6}{i}")
+    for i in DATA["icon"]:
+        print(f"{' '*4}{i}")
 
 def clear():
     os.system("clear")
 
-def sourcelpm_client():
-    enlace = os.path.expanduser("~/.lpm")
-    name_credentials = ".credentials"
+def userPackage():
+    os.makedirs(LOCAL_SOURCES, exist_ok=True)
+    return os.path.join(LOCAL_SOURCES, SOURCE_REGISTRY)
 
-    os.makedirs(enlace, exist_ok=True)
-    return os.path.join(enlace, name_credentials)
+def validate_idClient(id):
+    if (len(id) != 14):
+        return False
+    if (id[0] != "l"):
+        return False
+    if (id[7] != "p"):
+        return False
+    if (id[-1] != "m"):
+        return False
+    return True
+
+def validate_tokenClient(token):
+    return token.startswith("L") and len(token) >= 30
 
 
-# ~~~ Funciones de configuracion de entorno
 
-def create_credentials(file_path):
-    id_client = input(f"\n{' '*14} [ID client]: ")
-    print(f"{' '*16} |_ID_CLIENT_| -> [ {id_client} ]")
-    token_client = input(f"\n{' '*14} [TOKEN Client]: ")
-    print(f"{' '*16} |_TOKEN_CLIENT_| -> [ {token_client} ]")
+# ~~~ Funciones de credenciales lpm
 
-    animationsBAR_message(f"[!] Configurando credenciales locales", "[ OK ] Credenciales establecidas", 12)
+def create_credentials(file_path): 
+    print(f"{' '*4}[!] Iniciando configuración de LPM\n")
 
-    data = { "id_client": id_client, "token_secret": token_client }
+    id_client = input(f"{' '*6}[ID Client]: ").strip()
 
-    with open(file_path, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
+    if (not validate_idClient(id_client)):
+        print(f"{' '*4}[LPM][CONFIG][ID_CLIENT] --> ID_Client inválido")
+        sys.exit(1)
+    print(f"{' '*7}[LPM][CONFIG]>[ID_CLIENT] --> [ {id_client} ]")
+
+    token_client = input(f"\n{' '*6}[TOKEN Client]: ").strip()
+
+    if (not validate_tokenClient(token_client)):
+        print(f"{' '*4}[LPM][CONFIG][TOKEN_CLIENT] --> Token inválido")
+        sys.exit(1)
+    print(f"{' '*7}[LPM][CONFIG]>[TOKEN_CLIENT] --> [ OK ]\n")
+
+    animationsBAR_message("[!] Configurando credenciales locales", "[ OK ] Credenciales establecidas", 3 ,6)
+
+    data = {"credentials": {"id_client": id_client, "token_secret": token_client}, "package_install": {}}
+
+    save_lpm(data)
 
     os.chmod(file_path, 0o600)
     return data
 
 
 def verify_credentials():
-    file_path = sourcelpm_client()
+    file_path = userPackage()
 
     if (not os.path.isfile(file_path)):
         data = create_credentials(file_path)
@@ -66,10 +83,10 @@ def verify_credentials():
             with open(file_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
         except (json.JSONDecodeError, ValueError):
-            print(f"{' '*16} [!] Credenciales corruptas, recreando…")
+            print(f"{' '*6} [!] Credenciales corruptas, recreando…")
             data = create_credentials(file_path)
 
-    return data["id_client"], data["token_secret"]
+    return data["credentials"]["id_client"], data["credentials"]["token_secret"]
 
 
 
@@ -85,11 +102,9 @@ def delivery_search(args):
     autentificacion_local(id_client, token_secret, "search", args.name)
 
 def delivery_list(args):
+    id_client, token_secret = verify_credentials()
     search_packageLpm()
 
-def cmd_publish(args):
-    print("Publicando paquete actual…")
-    # Tu lógica de publicación
 
 
 
@@ -100,7 +115,6 @@ def cmd_remove(args):
 
 def main():
     icon()
-    print()
     
     parser = argparse.ArgumentParser(
         prog="lpm",

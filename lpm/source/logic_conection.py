@@ -4,7 +4,7 @@ import base64
 import zipfile
 import requests
 from lpm.source.animations import animationBAR_barra, animationsBAR_message
-from lpm.source.logic_local import add_packageAtLpm
+from lpm.source.logic_local import add_package
 
 
 URL_BASEDATA = "https://fastapi-production-c7c6.up.railway.app".rstrip('/')
@@ -26,9 +26,9 @@ def delivery_install(id_session, name_packet, version_packet):
 # Funciones de conexion y autentificacion
 
 def autentificacion_local(id_client, token_secret, type_consulta, name_packet):
-    animationsBAR_message("[!] Conectando con el Servidor", "[ OK ] Conectado con el Servidor", 12)
+    animationsBAR_message("[!] Conectando con el Servidor...", "[ OK ] Conectado con el Servidor...", 1, 4)
 
-    print(f"{' '*14} Iniciando autentificacion con el dominio: {id_client[:10]}...")
+    print(f"{' '*6} Iniciando autentificacion con el dominio: {id_client[:5]}...")
 
     auth_response = requests.post(f"{URL_BASEDATA}/authenticate", json=auth_conection(id_client, type_consulta, token_secret), timeout=10)
 
@@ -36,14 +36,14 @@ def autentificacion_local(id_client, token_secret, type_consulta, name_packet):
     auth_data = auth_response.json()
 
     if (not auth_data.get("authorized")):
-        animationsBAR_message("[!] Conectado a lpm_DATABASE", f"[ ERROR ] autentificacion fallida con el dominio: {id_client[:10]}", 12)
+        animationsBAR_message("[!] Conectado a lpm_DATABASE", f"[ ERROR ] autentificacion fallida con el dominio: {id_client[:5]}", 2, 4)
         sys.exit(1)
     
     session_id = auth_data["ID_session"]
 
-    animationsBAR_message("[!] Conectado a lpm_DATABASE", f"[ OK ] Conectado a lpm_DATABASE, Bienvenido {auth_data.get('username')}!", 12)
+    animationsBAR_message("[!] Conectado a lpm_DATABASE", f"[ OK ] Conectado a lpm_DATABASE, Bienvenido {auth_data.get('username')}!", 3, 4)
 
-    print(f"{' '*14} Conexión autentificada con exito...")
+    print(f"{' '*6} Conexión autentificada con exito...")
 
     if (type_consulta == "search"):
         funcDelivery_search(session_id, name_packet, type_consulta)
@@ -65,14 +65,13 @@ def funcDelivery_search(session_id, name_packet, type_consulta=None):
 
     except requests.exceptions.HTTPError as e:
         if e.response is not None:
-            print(f"{' '*16}[ ERROR ] {e.response.status_code} -> {e.response.text}")
-            animationsBAR_message(f"[!] Consultando por el paquete [ {name_packet} ]", f"[ ERROR ] El paquete [-( {name_packet} )-] no existe", 12)
+            animationsBAR_message(f"[!] Consultando por el paquete [{name_packet}]", f"[ ERROR ] El paquete [{name_packet}] no existe", 3, 4)
         sys.exit(1)
 
-    
-    animationsBAR_message(f"[!] Consultando por el paquete [ {name_packet} ]", f"[ OK ] El paquete {name_packet} existe!", 12)
+    animationsBAR_message(f"[!] Consultando por el paquete [{name_packet}]", f"[ OK ] El paquete existe!", 2, 4)
 
-    print(f"{' '*14} [_NAME_PAQUETE_] -> {name_packet}\n{' '*14} [_VERSION_] -> {data.get('lastest')}\n{' '*14} [_DESARROLLADOR_] -> {data.get('creador')})\n{' '*16} [ Description ] -> {data.get('description')}")
+    print(f"{' '*6}[ Name Package ] --> [{name_packet}]  \n{' '*6}[ Version ] -------> [{data.get('lastest')}]")
+    print(f"{' '*6}[ Desarrollador ] -> [{data.get('creador')}]  \n{' '*6}[ Descripcion ] ---> [{data.get('description')}]")
 
     return data.get("lastest"), data.get("__main__")
     
@@ -88,7 +87,7 @@ def funcDelivery_install(session_id, name_packet, type_consulta):
     os.makedirs(destino, exist_ok=True)
     zip_path = os.path.join(destino, f"{name_packet}.zip")
 
-    add_packageAtLpm(name_packet, versionLastest_packet, main_packet)
+    add_package(name_packet, versionLastest_packet, main_packet)
 
     try:
         response = requests.post(f"{URL_BASEDATA}/install_packet", json=delivery_install(session_id, name_packet, versionLastest_packet), timeout=20)
@@ -114,8 +113,9 @@ def funcDelivery_install(session_id, name_packet, type_consulta):
 
         os.remove(zip_path)
 
-        animationBAR_barra()
-        print(f"{' '*14}[ OK ] lpm instalo completamente!, name: {nombre_archivo} - tamaño: {tamaño} bytes")
+        print()
+        animationBAR_barra(4, "Instalando Package... ")
+        print(f"{' '*4}[ OK ] lpm instalo el package completamente!\n {' '*6}[NAME]: {nombre_archivo} -- [TAMAÑO]: {tamaño} bytes")
     
             
     except requests.exceptions.RequestException as e:
