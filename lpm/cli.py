@@ -3,7 +3,7 @@ import sys
 import json
 import argparse
 from lpm.source.logic_conection import autentificacion_local
-from lpm.source.logic_local import search_packageLpm, save_lpm
+from lpm.source.logic_local import search_packageLpm, save_lpm, use_packageLpm
 from lpm.source.animations import animationsBAR_message
 
 
@@ -105,6 +105,12 @@ def delivery_list(args):
     id_client, token_secret = verify_credentials()
     search_packageLpm()
 
+def delivery_use(args):
+    id_client, token_secret = verify_credentials()
+    use_packageLpm(args.name)
+    
+
+
 
 
 
@@ -131,6 +137,11 @@ def main():
     search_parser = subparsers.add_parser("search", help="Busca un paquete.")
     search_parser.add_argument("name")
     search_parser.set_defaults(func=delivery_search)
+
+    # lpm use <paquete>
+    search_parser = subparsers.add_parser("use", help="Ejecuta un paquete.")
+    search_parser.add_argument("name")
+    search_parser.set_defaults(func=delivery_use)
 
     # lpm remove <paquete>
     remove_parser = subparsers.add_parser("remove", help="Desinstalar un paquete.")

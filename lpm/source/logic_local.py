@@ -1,6 +1,7 @@
 import os
-import sys
+import time
 import json
+import subprocess
 
 # ~~ Variables Globales
 LOCAL_SOURCES = os.path.expanduser("~/.lpm")
@@ -59,6 +60,32 @@ def search_packageLpm():
         for clave, valor in info.items():
             if (clave == "version_use"):
                 print(f"{' '*7}{name}{' '*(22 - len(name))}{valor}\n")
+
+
+# ~~ Funciones locales
+
+def use_packageLpm(name):
+    data = lpm_Userpackage()
+
+    if name in data.get("package_install", {}):
+        package = data["package_install"][name]
+
+        main = package.get("__main-use__")
+        version = package.get("version_use")
+
+        rut = os.path.join(LOCAL_SOURCES, name, version, main)
+
+        if os.path.isfile(rut):
+            print(f"{' '*4}[!] [Running] {name}")
+            time.sleep(2)
+            subprocess.run(["python3", rut])
+        else:
+            print(f"{' '*4}[ ERROR ] Archivo principal no encontrado")
+
+    else:
+        print(f"{' '*4}[ ERROR ] El paquete no se encuentra instalado o no existe!")
+
+
 
 
 
