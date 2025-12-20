@@ -117,16 +117,17 @@ def delivery_use(args):
 
     use_packageLpm(commando)
 
-def delivery_update():
+def delivery_update(args):
     id_client, token_secret = verify_credentials()
 
-
-
-
-
-
-def cmd_remove(args):
+def delivery_remove(args):
+    id_client, token_secret = verify_credentials()
     print(f"Desinstalando el paquete {args.name}...")
+
+def delivery_config():
+    print("En Desarrollo")
+
+
 
 
 def main():    
@@ -161,7 +162,7 @@ def main():
     # lpm remove <paquete>
     remove_parser = subparsers.add_parser("remove", help="[!] Desinstalar un paquete.")
     remove_parser.add_argument("name")
-    remove_parser.set_defaults(func=cmd_remove)
+    remove_parser.set_defaults(func=delivery_remove)
 
     # lpm list
     list_parser = subparsers.add_parser("list", help="[!] Listar los paquetes instalados.")
@@ -169,7 +170,7 @@ def main():
 
     # lpm update
     update_parser = subparsers.add_parser("update", help="[!] Actualizar todos los paquetes instalados.")
-    update_parser.set_defaults(func=delivery_list)
+    update_parser.set_defaults(func=delivery_update)
 
     args = parser.parse_args()
 
@@ -177,12 +178,14 @@ def main():
 
     if (args.upgrade):
         actualizar_lpm()
+        sys.exit(1)
     
     if (args.version):
         version_lpm()
+        sys.exit(1)
         
     if hasattr(args, "func"):
         args.func(args)
 
-    elif (not args.upgrade) or (not args.version):
+    elif (args.upgrade) or (args.version):
         parser.print_help()
