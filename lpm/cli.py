@@ -5,7 +5,7 @@ import argparse
 from lpm.source.logic_conection import autentificacion_local
 from lpm.source.logic_local import search_packageLpm, save_lpm, use_packageLpm, verifypackage_use
 from lpm.source.animations import animationsBAR_message
-from lpm.source.upgrade import actualizar_lpm, verifyVersion, version_lpm
+from lpm.source.upgrade import actualizar_lpm, verifyVersion, version_lpm, VERSION
 
 
 # ~~ Variables Globales 
@@ -18,7 +18,7 @@ DATA = { "icon": [ "┬  ┌─┐┌┬┐", "│  ├─┘│││", "┴─
 
 def icon():
     version = verifyVersion()
-    if (version != False):
+    if (version != VERSION):
         DATA["icon"][1] = f"│  ├─┘│││ [!] Nueva version {version} disponible!"
 
     for i in DATA["icon"]:
