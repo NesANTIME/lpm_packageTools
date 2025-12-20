@@ -36,18 +36,18 @@ def actualizar_lpm():
 
 def verifyVersion():
     try:
-        reponse = requests.get("https://raw.githubusercontent.com/NesANTIME/lpm_packageTools/refs/heads/main/lpm/source/upgrade.py")
-        reponse.raise_for_status()
-
-        content = reponse.text
-        pattern = rf'{re.escape(VERSION)}\s*=\s*(.+)'
+        response = requests.get("https://raw.githubusercontent.com/NesANTIME/lpm_packageTools/refs/heads/main/lpm/source/upgrade.py")
+        response.raise_for_status()
+        content = response.text
+    
+        pattern = r'VERSION\s*=\s*["\']?([^"\']+)["\']?'
         match = re.search(pattern, content)
-
+        
         if (match):
             return match.group(1).strip()
-        
         else:
             return False
+            
     except requests.exceptions.RequestException as e:
         return False
     except Exception as e:
