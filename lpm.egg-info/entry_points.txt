@@ -1,0 +1,2 @@
+[console_scripts]
+lpm = lpm.cli:main

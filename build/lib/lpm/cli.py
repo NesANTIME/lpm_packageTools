@@ -5,14 +5,15 @@ import argparse
 from lpm.source.logic_conection import autentificacion_local
 from lpm.source.logic_local import search_packageLpm, save_lpm, use_packageLpm, verifypackage_use
 from lpm.source.animations import animationsBAR_message
-from lpm.source.upgrade import clone_repository, verityVersion
+from lpm.source.upgrade import clone_repository
 
 
 # ~~ Variables Globales 
 LOCAL_SOURCES = os.path.expanduser("~/.lpm")
 SOURCE_REGISTRY = ".lpm_Userpackage"
 
-DATA = { "icon": [ "┬  ┌─┐┌┬┐", "│  ├─┘│││", "┴─┘┴  ┴ ┴" ] }
+DATA = { "icon": [ "┬  ┌─┐┌┬┐", "│  ├─┘│││", "┴─┘┴  ┴ ┴" ], "version": "1.2.0" }
+
 
 # ~~~ Funciones Auxiliares ~~~
 
@@ -171,13 +172,12 @@ def main():
 
     args = parser.parse_args()
 
-    if (verityVersion()):
-
     if (args.upgrade):
         clone_repository()
 
+
     if hasattr(args, "func"):
         args.func(args)
-
+        
     elif (not args.upgrade):
         parser.print_help()
