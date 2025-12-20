@@ -8,7 +8,7 @@ import subprocess
 
 
 # ~~ Variables Globales
-VERSION = "2.0.0"
+VERSION = "2.1.0"
 
 URL_REPO = "https://github.com/NesANTIME/lpm_packageTools.git"
 
