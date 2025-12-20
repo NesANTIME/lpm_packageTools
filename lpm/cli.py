@@ -3,7 +3,7 @@ import sys
 import json
 import argparse
 from lpm.source.logic_conection import autentificacion_local
-from lpm.source.logic_local import search_packageLpm, save_lpm, use_packageLpm
+from lpm.source.logic_local import search_packageLpm, save_lpm, use_packageLpm, verifypackage_use
 from lpm.source.animations import animationsBAR_message
 
 
@@ -107,7 +107,11 @@ def delivery_list(args):
 
 def delivery_use(args):
     id_client, token_secret = verify_credentials()
-    use_packageLpm(args.name)
+    
+    rut = verifypackage_use(args.name)
+    commando = [sys.executable, rut] + args.args_script
+
+    use_packageLpm(commando)
     
 
 
@@ -134,22 +138,23 @@ def main():
     install_parser.set_defaults(func=delivery_install)
 
     # lpm update <paquete>
-    search_parser = subparsers.add_parser("search", help="Busca un paquete.")
+    search_parser = subparsers.add_parser("search", help="[!] Busca un paquete.")
     search_parser.add_argument("name")
     search_parser.set_defaults(func=delivery_search)
 
     # lpm use <paquete>
-    search_parser = subparsers.add_parser("use", help="Ejecuta un paquete.")
-    search_parser.add_argument("name")
-    search_parser.set_defaults(func=delivery_use)
+    use_parser = subparsers.add_parser("use", help="[!] Ejecuta un paquete.")
+    use_parser.add_argument("name")
+    use_parser.add_argument('args_script', nargs=argparse.REMAINDER, help='Argumentos del ejecutable')
+    use_parser.set_defaults(func=delivery_use)
 
     # lpm remove <paquete>
-    remove_parser = subparsers.add_parser("remove", help="Desinstalar un paquete.")
+    remove_parser = subparsers.add_parser("remove", help="[!] Desinstalar un paquete.")
     remove_parser.add_argument("name")
     remove_parser.set_defaults(func=cmd_remove)
 
     # lpm list
-    list_parser = subparsers.add_parser("list", help="Listar los paquetes instalados.")
+    list_parser = subparsers.add_parser("list", help="[!] Listar los paquetes instalados.")
     list_parser.set_defaults(func=delivery_list)
 
     args = parser.parse_args()

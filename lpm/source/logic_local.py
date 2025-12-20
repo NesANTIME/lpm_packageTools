@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 import json
 import subprocess
@@ -23,6 +24,26 @@ def lpm_Userpackage():
 
     with open(path_registros, "r", encoding="utf-8") as f:
         return json.load(f)
+    
+def verifypackage_use(name):
+    data = lpm_Userpackage()
+
+    if (name in data.get("package_install", {})):
+        package = data["package_install"][name]
+
+        main = package.get("__main-use__")
+        version = package.get("version_use")
+
+        rut = os.path.join(LOCAL_SOURCES, name, version, main)
+
+        if os.path.isfile(rut):
+            return rut
+        else:
+            print(f"{' '*4}[ ERROR ] Archivo principal no encontrado")
+
+    else:
+        print(f"{' '*4}[ ERROR ] El paquete no se encuentra instalado o no existe!")
+
     
 
 
@@ -64,26 +85,9 @@ def search_packageLpm():
 
 # ~~ Funciones locales
 
-def use_packageLpm(name):
-    data = lpm_Userpackage()
-
-    if name in data.get("package_install", {}):
-        package = data["package_install"][name]
-
-        main = package.get("__main-use__")
-        version = package.get("version_use")
-
-        rut = os.path.join(LOCAL_SOURCES, name, version, main)
-
-        if os.path.isfile(rut):
-            print(f"{' '*4}[!] [Running] {name}")
-            time.sleep(2)
-            subprocess.run(["python3", rut])
-        else:
-            print(f"{' '*4}[ ERROR ] Archivo principal no encontrado")
-
-    else:
-        print(f"{' '*4}[ ERROR ] El paquete no se encuentra instalado o no existe!")
+def use_packageLpm(comando):
+    subprocess.run(comando)
+    
 
 
 
