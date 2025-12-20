@@ -5,7 +5,7 @@ import argparse
 from lpm.source.logic_conection import autentificacion_local
 from lpm.source.logic_local import search_packageLpm, save_lpm, use_packageLpm, verifypackage_use
 from lpm.source.animations import animationsBAR_message
-from lpm.source.upgrade import clone_repository, verityVersion
+from lpm.source.upgrade import actualizar_lpm, verifyVersion, version_lpm
 
 
 # ~~ Variables Globales 
@@ -17,6 +17,10 @@ DATA = { "icon": [ "┬  ┌─┐┌┬┐", "│  ├─┘│││", "┴─
 # ~~~ Funciones Auxiliares ~~~
 
 def icon():
+    version = verifyVersion()
+    if (version):
+        DATA["icon"][3] = f"┴─┘┴  ┴ ┴ [!] Nueva version {version} disponible!"
+
     for i in DATA["icon"]:
         print(f"{' '*4}{i}")
 
@@ -125,9 +129,7 @@ def cmd_remove(args):
     print(f"Desinstalando el paquete {args.name}...")
 
 
-def main():
-    icon()
-    
+def main():    
     parser = argparse.ArgumentParser(
         prog="lpm",
         description="Administrador de paquetes privado hecho por NesAnTime."
@@ -171,13 +173,16 @@ def main():
 
     args = parser.parse_args()
 
-    if (verityVersion()):
+    icon()
 
     if (args.upgrade):
-        clone_repository()
-
+        actualizar_lpm()
+    
+    if (args.version):
+        version_lpm()
+        
     if hasattr(args, "func"):
         args.func(args)
 
-    elif (not args.upgrade):
+    elif (not args.upgrade) or (not args.version):
         parser.print_help()

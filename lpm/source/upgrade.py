@@ -1,20 +1,21 @@
 import os
+import re
 import sys
 import shutil
 import tempfile
+import requests
 import subprocess
 
 
 # ~~ Variables Globales
 VERSION = "1.2.0"
 
-LOCAL_SOURCES = os.path.expanduser("~/.lpm")
 URL_REPO = "https://github.com/NesANTIME/lpm_packageTools.git"
 
 
 # ~~ functions repository ~~
 
-def clone_repository():
+def actualizar_lpm():
     cmd = ["git", "clone", "--depth", "1"]
     temp_dir = tempfile.mkdtemp(prefix="install_")
 
@@ -30,6 +31,27 @@ def clone_repository():
     os.chdir("..")
     shutil.rmtree(temp_dir)
 
+    print(f"{' '*4}[ OK ] Actualizado Correctamente!")
 
-def verityVersion():
-    return
+
+def verifyVersion():
+    try:
+        reponse = requests.get("https://raw.githubusercontent.com/NesANTIME/lpm_packageTools/refs/heads/main/lpm/source/upgrade.py")
+        reponse.raise_for_status()
+
+        content = reponse.text
+        pattern = rf'{re.escape(VERSION)}\s*=\s*(.+)'
+        match = re.search(pattern, content)
+
+        if (match):
+            return match.group(1).strip()
+        
+        else:
+            return False
+    except requests.exceptions.RequestException as e:
+        return False
+    except Exception as e:
+        return False
+    
+def version_lpm():
+    print(f"{' '*4}[!] Version: {VERSION}")
