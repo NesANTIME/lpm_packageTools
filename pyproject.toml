@@ -1,6 +1,6 @@
 [project]
 name = "lpm"
-version = "2.1.2"
+version = "2.1.4"
 description = "Administrador de paquetes privado"
 authors = [{name = "NesAnTime"}]
 requires-python = ">=3.10"
