@@ -18,7 +18,7 @@ DATA = { "icon": [ "┬  ┌─┐┌┬┐", "│  ├─┘│││", "┴─
 
 def icon():
     version = verifyVersion()
-    if (version != VERSION):
+    if (version != VERSION) and (version != False):
         DATA["icon"][1] = f"│  ├─┘│││ [!] Nueva version {version} disponible!"
 
     for i in DATA["icon"]:

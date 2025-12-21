@@ -10,8 +10,6 @@ import subprocess
 # ~~ Variables Globales
 VERSION = "2.1.5"
 
-URL_REPO = "https://github.com/NesANTIME/lpm_packageTools.git"
-
 
 # ~~ functions repository ~~
 
@@ -21,7 +19,7 @@ def actualizar_lpm():
 
     print(f"{' '*4}[!] Iniciando actualizacion!")
 
-    cmd.extend([URL_REPO, temp_dir])
+    cmd.extend(["https://github.com/NesANTIME/lpm_packageTools.git", temp_dir])
 
     subprocess.run(cmd, check=True, capture_output=True)
     os.chdir(temp_dir)
@@ -53,5 +51,6 @@ def verifyVersion():
     except Exception as e:
         return False
     
+
 def version_lpm():
     print(f"{' '*4}[!] Version: {VERSION}")
