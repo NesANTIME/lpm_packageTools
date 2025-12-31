@@ -1,29 +1,43 @@
-#!/bin/bash
+#!/bin/sh
+set -e
 
-clear
-echo "[!] PROGRAMA DE INSTALACION DE LPM PACKET"
-echo " By NesAnTime - v1.2.0"
-echo " "
+INSTALL_DIR="$HOME/.lpm/program"
+BIN_DIR="$HOME/.local/bin"
 
-if command -v pipx &> /dev/null 
+echo "[lpm] packages administrator"
+
+
+if ! command -v python3 >/dev/null 2>&1;
 then
-    echo "pipx esta Instalado"
-    echo " "
-else
-    echo "pipx no esta instalado, iniciando instalacion..."
-
-    python3 -m pip install --user pipx
-    python3 -m pip ensurepath
-
-    echo "Instalado Correctamente!"
+    echo "[ ERROR ] python3 no esta instalado."
+    exit 1
 fi
 
-if pipx list | grep -q "lpm" 
-then
-    pipx uninstall lpm
-fi
+echo ""
 
-pipx install .
-pipx inject lpm requests
+mkdir -p "$INSTALL_DIR"
+mkdir -p "$BIN_DIR"
+
+echo "instalando..."
+cp -r source "$INSTALL_DIR/"
+cp lpm.py "$INSTALL_DIR/"
+
+python3 -m venv "$INSTALL_DIR/lpm_venv"
+. "$INSTALL_DIR/lpm_venv/bin/activate"
+
+pip install --upgrade pip
+pip install requests
+pip install itertools
+
+
+cat > "$BIN_DIR/lpm" <<EOF
+#!/bin/sh
+. "$INSTALL_DIR/lpm_venv/bin/activate"
+exec python "$INSTALL_DIR/lpm.py"
+"\$@"
+EOF
+
+chmod +x "$BIN_DIR/lpm"
 
 echo
+echo "[ OK ] Instalacion Completada.."

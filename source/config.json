@@ -1,0 +1,23 @@
+{
+    "info":{
+        "version": "3.0.1",
+        "desarrollador": ["NesANTIME", "https://github.com/NesANTIME"],
+        "icon": [ "┬  ┌─┐┌┬┐", "│  ├─┘│││", "┴─┘┴  ┴ ┴" ]
+    },
+
+    "urls": {
+        "logic": {
+            "repo_oficial": "https://github.com/NesANTIME/lpm_packageTools.git",
+            "config_jsonRepo": "https://raw.githubusercontent.com/NesANTIME/lpm_packageTools/refs/heads/main/source/config.json"
+        },
+
+        "controller": [
+            "~/.lpm",
+            ".lpm_config"
+        ],
+
+        "url_servidores": [
+            "https://fastapi-production-c7c6.up.railway.app"
+        ]
+    }
+}
