@@ -27,7 +27,6 @@ python3 -m venv "$INSTALL_DIR/lpm_venv"
 
 pip install --upgrade pip
 pip install requests
-pip install itertools
 
 
 cat > "$BIN_DIR/lpm" <<EOF

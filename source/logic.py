@@ -1,11 +1,9 @@
 import os
 import sys
-import json
 import shutil
 import tempfile
 import requests
 import subprocess
-from pathlib import Path
 
 # ~~~ modulos internos de lpm ~~~
 from source.logics.func_use import main_use
@@ -16,14 +14,10 @@ from source.logics.func_update import main_update
 from source.logics.func_install import main_install
 
 from source.modules.controller import verify_userConfig
+from source.modules.load_config import load_config
 
 
 # ~~~ Funciones Auxiliares ~~~
-
-def load_config():
-    config_json = PATH_PROGRAM / "config.json"
-    with config_json.open("r", encoding="utf-8") as f:
-        return json.load(f)
     
 def load_configRepo():
     try:
@@ -59,9 +53,7 @@ def check_newVersion():
 
 
 # ~~ VARIABLES GLOBALES ~~
-PATH_PROGRAM = Path(__file__).resolve().parent
 CONFIG_JSON = load_config()
-
 
 
 

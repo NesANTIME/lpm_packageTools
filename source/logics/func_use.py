@@ -4,7 +4,7 @@ import subprocess
 
 
 # ~~~ funciones internas de lpm ~~~
-from source.logic import load_config
+from source.modules.load_config import load_config
 from source.modules.controller import func_userConfig
 
 

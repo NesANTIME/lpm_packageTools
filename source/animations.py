@@ -3,7 +3,8 @@ import time
 import itertools
 
 # ~~ modulos internos lpm ~~
-from source.logic import load_config, check_newVersion
+from source.logic import check_newVersion
+from source.modules.load_config import load_config
 
 
 # ~~~ funciones principales de animacion ~~~

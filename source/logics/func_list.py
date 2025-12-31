@@ -2,8 +2,6 @@
 from source.modules.controller import func_userConfig
 
 
-
-
 def main_list():
     data = func_userConfig("r", None)
 

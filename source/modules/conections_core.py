@@ -2,8 +2,8 @@ import sys
 import requests
 
 # ~~ modulos internos lpm ~~
-from source.logic import load_config
 from source.animations import message_animation
+from source.modules.load_config import load_config
 
 
 # ~~~~ VARIABLES GLOBALES ~~~~
