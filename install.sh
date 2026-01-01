@@ -32,9 +32,9 @@ pip install requests
 cat > "$BIN_DIR/lpm" <<EOF
 #!/bin/sh
 . "$INSTALL_DIR/lpm_venv/bin/activate"
-exec python "$INSTALL_DIR/lpm.py"
-"\$@"
+exec python "$INSTALL_DIR/lpm.py" "\$@"
 EOF
+
 
 chmod +x "$BIN_DIR/lpm"
 

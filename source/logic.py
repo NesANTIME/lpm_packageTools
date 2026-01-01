@@ -79,7 +79,6 @@ def lpm_upgrade():
         os.chdir(cwd)
         shutil.rmtree(temp_dir, ignore_errors=True)
 
-    sys.exit(0)
 
 
 
@@ -94,4 +93,3 @@ def lpm_version():
         print(f"{' '*4}{info_newVersion}")
     
     print(f"{' '*6}lpm packages by nesantime")
-    sys.exit(0)
