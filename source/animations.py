@@ -3,16 +3,14 @@ import time
 import itertools
 
 # ~~ modulos internos lpm ~~
-from source.logic import check_newVersion
-from source.modules.load_config import load_config
+from source.modules.load_config import load_config, check_newVersion
 
 
 # ~~~ funciones principales de animacion ~~~
 
 def icon():
     config_json = load_config()
-    #info_newVersion = check_newVersion()
-    info_newVersion = " Hay una nueva version"
+    info_newVersion = check_newVersion()
 
     icon = config_json["info"]["icon"]
 

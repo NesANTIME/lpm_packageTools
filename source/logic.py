@@ -14,40 +14,7 @@ from source.logics.func_update import main_update
 from source.logics.func_install import main_install
 
 from source.modules.controller import verify_userConfig
-from source.modules.load_config import load_config
-
-
-# ~~~ Funciones Auxiliares ~~~
-    
-def load_configRepo():
-    try:
-        response = requests.get(CONFIG_JSON['urls']['logic']['config_jsonRepo'], timeout=10)
-        response.raise_for_status()
-        return response.json()
-    except requests.exceptions.Timeout:
-        raise RuntimeError("[!] Tiempo de espera agotado al descargar el JSON")
-    except requests.exceptions.HTTPError as e:
-        raise RuntimeError(f"[!] Error HTTP al descargar JSON: {e}")
-    except requests.exceptions.RequestException as e:
-        raise RuntimeError(f"[!] Error de red: {e}")
-    except ValueError:
-        raise RuntimeError("[!] El contenido descargado no es un JSON válido")
-    
-
-
-
-# ~~~~~ Funciones auxiliares externas ~~~~~
-
-def check_newVersion():
-    config_jsonRepo = load_configRepo()
-
-    version_local = CONFIG_JSON["info"]["version"]
-    version_lastest = config_jsonRepo["info"]["version"]
-
-    if (version_local != version_lastest):
-        return "[!] Nueva version disponible!"
-    
-    return False
+from source.modules.load_config import load_config, load_configRepo, check_newVersion
 
 
 
@@ -119,5 +86,12 @@ def lpm_upgrade():
 
 def lpm_version():
     version = CONFIG_JSON["info"]["version"]
-    print(f"{' '*4}Version: {version}\n{' '*6}lpm packages by nesantime")
+    info_newVersion = check_newVersion()
+
+    print(f"{' '*4}Version: {version}")
+
+    if (info_newVersion != False):
+        print(f"{' '*4}{info_newVersion}")
+    
+    print(f"{' '*6}lpm packages by nesantime")
     sys.exit(0)

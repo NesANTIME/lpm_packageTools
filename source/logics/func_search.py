@@ -3,12 +3,7 @@ import requests
 
 # ~~~ modulos internos de lpm ~~~
 from source.animations import message_animation
-from source.modules.load_config import load_config
-from source.modules.conections_core import autentificacion_server
-
-
-# ~~~~ VARIABLES GLOBALES ~~~~
-URL_BASEDATA = load_config["url_servidores"][0]
+from source.modules.conections_core import autentificacion_server, URL_BASEDATA
 
 
 

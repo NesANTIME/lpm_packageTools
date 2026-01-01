@@ -7,7 +7,8 @@ from source.modules.load_config import load_config
 
 
 # ~~~~ VARIABLES GLOBALES ~~~~
-URL_BASEDATA = load_config["url_servidores"][0]
+config_json = load_config()
+URL_BASEDATA = config_json["urls"]["url_servidores"][0].rstrip('/')
 
 
 

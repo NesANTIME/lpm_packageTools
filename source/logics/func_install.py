@@ -8,13 +8,9 @@ import requests
 # ~~~ modulos internos de lpm ~~~
 from source.animations import bar_animation
 from source.logics.func_search import main_search
-from source.modules.load_config import load_config
 from source.modules.controller import func_userConfig
-from source.modules.conections_core import autentificacion_server
+from source.modules.conections_core import autentificacion_server, URL_BASEDATA
 
-
-# ~~~~ VARIABLES GLOBALES ~~~~
-URL_BASEDATA = load_config["url_servidores"][0]
 
 
 

@@ -1,9 +1,7 @@
-import sys
 import argparse
 
 # ~~ modulos internos lpm ~~
 from source.animations import icon
-from source.logics.func_use import main_use
 from source.logic import verify_credentials, lpm_upgrade, lpm_version
 
 

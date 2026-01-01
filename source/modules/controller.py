@@ -8,8 +8,9 @@ from source.modules.load_config import load_config
 
 
 # ~~~~ VARIABLES GLOBALES ~~~~
-LOCAL_SOURCES = os.path.expanduser(load_config["urls"]["controller"][0])
-SOURCE_REGISTRY = load_config["urls"]["controller"][1]
+config_json = load_config()
+LOCAL_SOURCES = os.path.expanduser(config_json["urls"]["controller"][0])
+SOURCE_REGISTRY = config_json["urls"]["controller"][1]
 
 
 

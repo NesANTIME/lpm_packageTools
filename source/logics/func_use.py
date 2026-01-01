@@ -9,7 +9,8 @@ from source.modules.controller import func_userConfig
 
 
 # ~~~~ VARIABLES GLOBALES ~~~~
-LOCAL_SOURCES = os.path.expanduser(load_config["urls"]["controller"][0])
+config_json = load_config()
+LOCAL_SOURCES = os.path.expanduser(config_json["urls"]["controller"][0])
 
 
 
