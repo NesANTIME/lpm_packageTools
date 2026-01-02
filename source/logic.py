@@ -51,7 +51,11 @@ def lpm_upgrade():
     config_jsonRepo = load_configRepo()
 
     repo = CONFIG_JSON["urls"]["logic"]["repo_oficial"]
+
     program_dir = os.path.join(home, ".lpm", "program")
+
+    programSource_ruta = os.path.join(home, ".lpm", "program", "source")
+    programLpm_ruta = os.path.join(home, ".lpm", "program", "lpm.py")
 
     temp_dir = tempfile.mkdtemp(prefix="lpm_install_")
     cwd = os.getcwd()
@@ -65,8 +69,9 @@ def lpm_upgrade():
         subprocess.run(["git", "clone", "--depth", "1", repo, temp_dir], check=True)
         print(f"{' '*4}[!] Instalando actualización")
 
-        if os.path.exists(program_dir):
-            shutil.rmtree(program_dir)
+        if (os.path.isdir(programSource_ruta)) or (os.path.isfile(programLpm_ruta)):
+            shutil.rmtree(programSource_ruta)
+            shutil.rmtree(programLpm_ruta)
 
         shutil.copytree(temp_dir, program_dir)
 
