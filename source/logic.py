@@ -47,44 +47,71 @@ def verify_credentials(function, name_package):
 
 
 def lpm_upgrade():
-    home = os.path.expanduser("~")
+    ruta_home = os.path.expanduser("~")
+
     config_jsonRepo = load_configRepo()
+    url_repoficial = CONFIG_JSON["urls"]["logic"]["repo_oficial"]
 
-    repo = CONFIG_JSON["urls"]["logic"]["repo_oficial"]
+    dir_lpm = os.path.join(ruta_home, ".lpm", "lpm_")
+    dir_lpm_py = os.path.join(ruta_home, ".lpm", "lpm_", "lpm.py")
+    dir_lpm_source = os.path.join(ruta_home, ".lpm", "lpm_", "source")
 
-    program_dir = os.path.join(home, ".lpm", "program")
-
-    programSource_ruta = os.path.join(home, ".lpm", "program", "source")
-    programLpm_ruta = os.path.join(home, ".lpm", "program", "lpm.py")
-
-    temp_dir = tempfile.mkdtemp(prefix="lpm_install_")
+    dir_temp = tempfile.mkdtemp(prefix="lpm_install_")
     cwd = os.getcwd()
 
     try:
         print(f"{' '*4}[!] Iniciando autoinstalación")
         print(f"{' '*6}Version actual ---> {CONFIG_JSON['info']['version']}")
         print(f"{' '*6}Version lastest --> {config_jsonRepo['info']['version']}")
-        print(f"\n{' '*6}[ {repo} ]")
+        print(f"\n{' '*6}[ {url_repoficial} ]")
 
-        subprocess.run(["git", "clone", "--depth", "1", repo, temp_dir], check=True)
+        subprocess.run(["git", "clone", "--depth", "1", url_repoficial, dir_temp], check=True)
+
+        # verificacion y validacion de archivos descargados
+        dir_lpm_source_temp = os.path.join(dir_temp, "source")
+        dir_lpm_py_temp = os.path.join(dir_temp, "lpm.py")
+
+        if not os.path.isdir(dir_lpm_source_temp):
+            raise RuntimeError("Repo inválido: falta source/")
+
+        if not os.path.isfile(dir_lpm_py_temp):
+            raise RuntimeError("Repo inválido: falta lpm.py")
+        
+
+        # elimina archivos
+        if os.path.isfile(os.path.join(dir_temp, "install.sh")):
+            os.remove(os.path.join(dir_temp, "install.sh"))
+
+        
         print(f"{' '*4}[!] Instalando actualización")
 
-        if os.path.isdir(programSource_ruta):
-            shutil.rmtree(programSource_ruta)
+        os.makedirs(dir_lpm, exist_ok=True)
 
-        if os.path.isfile(programLpm_ruta):
-            os.remove(programLpm_ruta)
+        if os.path.isdir(dir_lpm_source):
+            shutil.rmtree(dir_lpm_source)
 
-        shutil.copytree(temp_dir, program_dir)
+        if os.path.isfile(dir_lpm_py):
+            os.remove(dir_lpm_py)
 
-        venv_python = os.path.join(program_dir, "lpm_venv", "bin", "python")
+        shutil.copytree(
+            dir_lpm_source_temp,
+            os.path.join(dir_lpm, "source")
+        )
+
+        shutil.copy2(
+            dir_lpm_py_temp,
+            os.path.join(dir_lpm, "lpm.py")
+        )
+
+
+        venv_python = os.path.join(dir_lpm, "lpm_venv", "bin", "python")
         subprocess.run([venv_python, "-m", "pip", "install", "--upgrade", "requests"], check=True)
 
         print(f"{' '*4}[ OK ] Actualizado correctamente")
 
     finally:
         os.chdir(cwd)
-        shutil.rmtree(temp_dir, ignore_errors=True)
+        shutil.rmtree(dir_temp, ignore_errors=True)
 
 
 

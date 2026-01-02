@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-INSTALL_DIR="$HOME/.lpm/program"
+INSTALL_DIR="$HOME/.lpm/lpm_"
 BIN_DIR="$HOME/.local/bin"
 
 echo "[lpm] packages administrator"
