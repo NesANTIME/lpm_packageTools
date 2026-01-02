@@ -85,7 +85,7 @@ def main_install(id_client, token_client, name_package):
 
         os.remove(zip_path)
 
-        print(f"[ OK ] Package installed successfully \n{' '*5}Name   : {nombre_archivo}\n{' '*5}Size   : {tamaño} bytes")    
+        print(f"\n{' '*4}[ OK ] Package installed successfully \n{' '*5}Name   : {nombre_archivo}\n{' '*5}Size   : {tamaño} bytes")    
             
     except requests.exceptions.RequestException as e:
         print(f"❌ Error de conexión: {e}")

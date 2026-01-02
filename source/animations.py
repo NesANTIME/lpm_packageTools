@@ -29,7 +29,7 @@ def bar_animation(num, msg):
     print()
 
 
-def message_animation(msg, msg_completed, duration = 2.0, num = 1):
+def message_animation(msg, msg_completed, duration = 1.2, num = 1):
     spinner = itertools.cycle("⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏")
     end_time = time.time() + duration
     indent = " " * num
