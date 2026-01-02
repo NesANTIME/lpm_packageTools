@@ -39,7 +39,7 @@ def addPackage(name_package, version_package, main):
 
 def main_install(id_client, token_client, name_package):
     session_id = autentificacion_server(id_client, token_client, "install")
-    lastest_package, main_package = main_search(id_client, token_client, name_package)
+    lastest_package, main_package = main_search(id_client, token_client, name_package, session_id)
 
     if (not lastest_package) or (not main_package):
         sys.exit(1)

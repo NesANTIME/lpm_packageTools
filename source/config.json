@@ -17,7 +17,7 @@
         ],
 
         "url_servidores": [
-            "https://fastapi-production-c7c6.up.railway.app"
+            "https://fastapi-production-c7c6.up.railway.app/"
         ]
     }
 }

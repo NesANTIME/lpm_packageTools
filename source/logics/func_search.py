@@ -8,8 +8,12 @@ from source.modules.conections_core import autentificacion_server, URL_BASEDATA
 
 
 
-def main_search(id_client, token_client, name_package):
-    session_id = autentificacion_server(id_client, token_client, "search")
+def main_search(id_client, token_client, name_package, verify_normal):
+
+    if (verify_normal == None):
+        session_id = autentificacion_server(id_client, token_client, "search")
+    else:
+        session_id = verify_normal
         
     try:
         response = requests.post(f"{URL_BASEDATA}/search_packet", json={
@@ -30,7 +34,7 @@ def main_search(id_client, token_client, name_package):
 
     message_animation(f"[!] Consultando por el paquete [{name_package}]", f"[ OK ] El paquete existe!", 2, 4)
 
-    print(f"{' '*6}Package      : {name_package}\n{' '*6}Version      : {data.get('lastest')} (latest)")
+    print(f"\n{' '*6}Package      : {name_package}\n{' '*6}Version      : {data.get('lastest')} (latest)")
     print(f"{' '*6}Developer    : {data.get('creador')}\n{' '*6}Description  : {data.get('description')}")
 
     return data.get("lastest"), data.get("__main__")

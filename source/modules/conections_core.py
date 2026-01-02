@@ -8,8 +8,7 @@ from source.modules.load_config import load_config
 
 # ~~~~ VARIABLES GLOBALES ~~~~
 config_json = load_config()
-URL_BASEDATA = config_json["urls"]["url_servidores"][0].rstrip('/')
-
+URL_BASEDATA = config_json["urls"]["url_servidores"][0]
 
 
 
@@ -19,7 +18,7 @@ def autentificacion_server(id_client, token_secret, type_consulta):
     message_animation("[!] Conectando con el Servidor...", "[ OK ] Conectado con el Servidor...", 1, 4)
     print(f"{' '*6} Iniciando autentificacion con el dominio: {id_client[:5]}...")
 
-    auth_response = requests.post(f"{URL_BASEDATA}/authenticate", json={
+    auth_response = requests.post(f"{URL_BASEDATA.rstrip('/')}/authenticate", json={
         "client_id": id_client, "type_consultation": type_consulta, "secret_token": token_secret
     }, timeout=10)
 

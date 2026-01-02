@@ -33,7 +33,7 @@ def verify_credentials(function, name_package):
     if (function == "install"):
         main_install(id_client, token_client, name_package)
     elif (function == "search"):
-        main_search(id_client, token_client, name_package)
+        main_search(id_client, token_client, name_package, None)
     elif (function == "list"):
         main_list()
     elif (function == "update"):
