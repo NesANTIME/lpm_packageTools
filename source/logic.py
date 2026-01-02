@@ -69,9 +69,11 @@ def lpm_upgrade():
         subprocess.run(["git", "clone", "--depth", "1", repo, temp_dir], check=True)
         print(f"{' '*4}[!] Instalando actualización")
 
-        if (os.path.isdir(programSource_ruta)) or (os.path.isfile(programLpm_ruta)):
+        if os.path.isdir(programSource_ruta):
             shutil.rmtree(programSource_ruta)
-            shutil.rmtree(programLpm_ruta)
+
+        if os.path.isfile(programLpm_ruta):
+            os.remove(programLpm_ruta)
 
         shutil.copytree(temp_dir, program_dir)
 

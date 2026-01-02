@@ -75,10 +75,12 @@ update_parser.set_defaults(func=update)
 args = parser.parse_args()
 
 if args.version:
+    icon()
     lpm_version()
     exit(0)
 
 if args.upgrade:
+    icon()
     lpm_upgrade()
     exit(0)
 
@@ -86,4 +88,5 @@ if args.upgrade:
 if (hasattr(args, "func")):
     args.func(args)
 else:
+    icon()
     parser.print_help()
