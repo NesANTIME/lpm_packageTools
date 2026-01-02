@@ -12,7 +12,9 @@ def load_config():
         return json.load(f)
     
 
-def load_configRepo(config_json):
+def load_configRepo():
+    config_json = load_config()
+
     try:
         response = requests.get(config_json['urls']['logic']['config_jsonRepo'], timeout=10)
         response.raise_for_status()
@@ -33,7 +35,7 @@ def load_configRepo(config_json):
 
 def check_newVersion():
     config_json = load_config()
-    config_jsonRepo = load_configRepo(config_json)
+    config_jsonRepo = load_configRepo()
     
 
     version_local = config_json["info"]["version"]

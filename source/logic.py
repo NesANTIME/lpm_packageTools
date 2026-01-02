@@ -90,6 +90,6 @@ def lpm_version():
     print(f"{' '*4}Version: {version}")
 
     if (info_newVersion != False):
-        print(f"{' '*4}{info_newVersion}")
+        print(f"{' '*4} {info_newVersion}")
     
     print(f"{' '*6}lpm packages by nesantime")
