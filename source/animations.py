@@ -25,7 +25,7 @@ def bar_animation(num, msg):
     for i in range(20 + 1):
         barra = "█" * i + "-" * (20 - i)
         print(f"\r{' '*num}{msg}[{barra}] {i*5}%", end="", flush=True)
-        time.sleep(0.2)
+        time.sleep(0.1)
     print()
 
 
