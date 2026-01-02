@@ -8,15 +8,19 @@ from source.logic import verify_credentials, lpm_upgrade, lpm_version
 # ~~~ funciones ~~~
 
 def install(args):
+    icon()
     verify_credentials("install", args.package)
 
 def search(args):
+    icon()
     verify_credentials("search", args.package)
 
 def list(args):
+    icon()
     verify_credentials("list", None)
 
 def update(args):
+    icon()
     verify_credentials("update", None)
 
 def use(args):
@@ -29,9 +33,6 @@ def use(args):
 #def delivery_config():
 #    print("En Desarrollo")
 
-
-
-icon()   
 
 parser = argparse.ArgumentParser(
     prog="lpm",
