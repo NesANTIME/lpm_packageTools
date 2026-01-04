@@ -1,3 +1,4 @@
+import sys
 import argparse
 
 # ~~ modulos internos lpm ~~
@@ -9,7 +10,13 @@ from source.logic import verify_credentials, lpm_upgrade, lpm_version
 
 def install(args):
     icon()
-    verify_credentials("install", args.package)
+    name_package = args.package
+
+    if (args.pkg_version):
+        version_pkg = args.pkg_version
+        name_package = [name_package, version_pkg]
+
+    verify_credentials("install", name_package)
 
 def search(args):
     icon()
@@ -38,7 +45,9 @@ parser = argparse.ArgumentParser(
     prog="lpm",
     description="Administrador de paquetes privado hecho por NesAnTime."
 )
-parser.add_argument('--upgrade', action='store_true', help='[!] Actualizar lpm desde el repositorio!')
+parser.add_argument('--upgrade-now', action='store_true', help='[!] Actualizar lpm desde el repositorio!')
+parser.add_argument('--upgrade-now-force', action='store_true', help='[!] Forzar actualizar lpm desde el repositorio')
+parser.add_argument('--restart-config', action='store_true', help='[!] Reiniciar archivos de configuracion en local')
 parser.add_argument('--version', action='store_true', help='[!] Mostrar version LPM!')
 
 subparsers = parser.add_subparsers(dest="command")
@@ -46,6 +55,7 @@ subparsers = parser.add_subparsers(dest="command")
     # lpm install <paquete>
 install_parser = subparsers.add_parser("install", help="[!] Instala un paquete.")
 install_parser.add_argument("package")
+install_parser.add_argument("--pkg-version", help="Versión específica del paquete", default=None)
 install_parser.set_defaults(func=install)
 
     # lpm update <paquete>
@@ -74,15 +84,25 @@ update_parser.set_defaults(func=update)
 
 args = parser.parse_args()
 
-if args.version:
+if (args.version):
     icon()
     lpm_version()
-    exit(0)
+    sys.exit(0)
 
-if args.upgrade:
+if (args.upgrade_now):
     icon()
-    lpm_upgrade()
-    exit(0)
+    lpm_upgrade("normal")
+    sys.exit(0)
+
+if (args.upgrade_now_force):
+    icon()
+    lpm_upgrade("force")
+    sys.exit(0)
+
+if (args.restart_config):
+    icon()
+
+
 
         
 if (hasattr(args, "func")):

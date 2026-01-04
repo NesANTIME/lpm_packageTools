@@ -104,3 +104,13 @@ def verify_userConfig():
             data = create_credentials(file_path)
 
     return data["credentials"]["id_client"], data["credentials"]["token_secret"]
+
+
+
+def func_restartConfig():
+    file_path = return_userConfig()
+
+    if os.path.isfile(file_path):
+            os.remove(file_path)
+
+    

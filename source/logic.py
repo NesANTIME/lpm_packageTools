@@ -2,7 +2,6 @@ import os
 import sys
 import shutil
 import tempfile
-import requests
 import subprocess
 
 # ~~~ modulos internos de lpm ~~~
@@ -46,7 +45,7 @@ def verify_credentials(function, name_package):
 
 
 
-def lpm_upgrade():
+def lpm_upgrade(mode):
     ruta_home = os.path.expanduser("~")
 
     config_jsonRepo = load_configRepo()
@@ -56,15 +55,24 @@ def lpm_upgrade():
     dir_lpm_py = os.path.join(ruta_home, ".lpm", "lpm_", "lpm.py")
     dir_lpm_source = os.path.join(ruta_home, ".lpm", "lpm_", "source")
 
+    version_local = CONFIG_JSON['info']['version']
+    version_lastest = config_jsonRepo['info']['version']
+
+    print(f"{' '*4}[!] Iniciando autoinstalación")
+    print(f"{' '*6}Version actual -----> {version_local}")
+    print(f"{' '*6}Version lastest ----> {version_lastest}")
+    print(f"\n{' '*6}[ {url_repoficial} ]")
+
+    if (mode == "normal"):
+        if (version_local == version_lastest):
+            print(f"{' '*4}[!] Ya se encuentra en la ultima version!")
+            sys.exit(0)
+        
+
     dir_temp = tempfile.mkdtemp(prefix="lpm_install_")
     cwd = os.getcwd()
 
     try:
-        print(f"{' '*4}[!] Iniciando autoinstalación")
-        print(f"{' '*6}Version actual ---> {CONFIG_JSON['info']['version']}")
-        print(f"{' '*6}Version lastest --> {config_jsonRepo['info']['version']}")
-        print(f"\n{' '*6}[ {url_repoficial} ]")
-
         subprocess.run(["git", "clone", "--depth", "1", url_repoficial, dir_temp], check=True)
 
         # verificacion y validacion de archivos descargados
@@ -102,7 +110,6 @@ def lpm_upgrade():
             dir_lpm_py_temp,
             os.path.join(dir_lpm, "lpm.py")
         )
-
 
         venv_python = os.path.join(dir_lpm, "lpm_venv", "bin", "python")
         subprocess.run([venv_python, "-m", "pip", "install", "--upgrade", "requests"], check=True)

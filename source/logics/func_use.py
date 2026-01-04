@@ -24,7 +24,7 @@ def verify_packageExists(name_package):
         main = package.get("__main-use__")
         version = package.get("version_use")
 
-        ruta = os.path.join(LOCAL_SOURCES, name_package, version, main)
+        ruta = os.path.join(LOCAL_SOURCES, "packages", name_package, version, main)
 
         if os.path.isfile(ruta):
             return ruta
@@ -45,7 +45,6 @@ def main_use(name):
 
     if (verify_packageExists(name_package) != False):
         print("\n")
-        comando = [sys.executable, rutas] + argumentos_package
-        subprocess.run(comando)
+        subprocess.run([sys.executable, rutas] + argumentos_package)
     else:
         sys.exit(1)

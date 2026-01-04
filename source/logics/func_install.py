@@ -7,8 +7,8 @@ import requests
 
 # ~~~ modulos internos de lpm ~~~
 from source.animations import bar_animation
-from source.logics.func_search import main_search
 from source.modules.controller import func_userConfig
+from source.logics.func_search import main_search
 from source.modules.conections_core import autentificacion_server, URL_BASEDATA
 
 
@@ -35,17 +35,18 @@ def addPackage(name_package, version_package, main):
     func_userConfig("w", data)
 
 
-
-
 def main_install(id_client, token_client, name_package):
     session_id = autentificacion_server(id_client, token_client, "install")
-    lastest_package, main_package = main_search(id_client, token_client, name_package, session_id)
+
+    lastest_package, main_package = main_search(None, None, name_package, session_id)
 
     if (not lastest_package) or (not main_package):
         sys.exit(1)
 
-    destino = os.path.expanduser(f"~/.lpm/{name_package}/{lastest_package}")
+    destino = os.path.expanduser(f"~/.lpm/packages/{name_package}/{lastest_package}")
+
     os.makedirs(destino, exist_ok=True)
+
     zip_path = os.path.join(destino, f"{name_package}.zip")
 
     addPackage(name_package, lastest_package, main_package)
@@ -70,8 +71,8 @@ def main_install(id_client, token_client, name_package):
 
         contenido = base64.b64decode(contenido_base64)
 
-        validation = input(f"\n{' '*4}[!] Desea continuar a la instalacion del package? (y/n): ").strip
-        if (validation == "n"):
+        validation = input(f"\n{' '*4}[!] Desea continuar a la instalacion del package? (y/n): ").strip()
+        if (validation != "y") or (validation != "s"):
             print(f"{' '*6}[ ERROR ] Instalacion cancelada por el usuario! ")
             sys.exit(1)
 
