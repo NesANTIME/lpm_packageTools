@@ -36,7 +36,7 @@ def verify_credentials(function, name_package):
     elif (function == "list"):
         main_list()
     elif (function == "update"):
-        main_update()
+        main_update(id_client, token_client)
     elif (function == "remove"):
         main_remove()
     elif (function == "use"):
