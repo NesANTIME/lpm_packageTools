@@ -44,7 +44,7 @@ def main_install(id_client, token_client, package):
         versionPackage = package[1]
     else:
         namePackage = package
-        versionPackage = "lastest"
+        versionPackage = None
 
 
     try:
@@ -82,9 +82,10 @@ def main_install(id_client, token_client, package):
     if (not version_pkg) or (not main_pkg):
         sys.exit(1)
 
-    validation = input(f"\n{' '*4}[!] Desea continuar a la instalacion del package? (y/n): ").strip()
-    if (validation != "y") or (validation != "s"):
-        print(f"{' '*6}[ ERROR ] Instalacion cancelada por el usuario! ")
+
+    validation = input(f"\n{' '*4}[!] Desea continuar a la instalacion del package? (y/n): ").strip().lower()
+    if validation not in ("y", "s"):
+        print(f"{' '*6}[ ERROR ] Instalacion cancelada por el usuario!")
         sys.exit(1)
 
 
