@@ -37,10 +37,16 @@ def main_update(id_client, token_client):
     for name, info in data["package_install"].items():
         list_packages.append(name)
 
-    print(f"{' '*6}[Name Package]{' '*9}[Version]{' '*13}[Lastest]    \n{' '*6}{'-'*20}{' '*3}{'-'*19}{' '*3}{'-'*20}")
-
     result_packages = funcDelivery_update(id_client, token_client, list_packages)
+
+    print(f"{' '*6}[Name Package]{' '*9}[Version]{' '*13}[Lastest]    \n{' '*6}{'-'*20}{' '*3}{'-'*19}{' '*3}{'-'*20}")
     list_packages_server = result_packages["list_packages"]
 
-    for name_package, version_package in list_packages_server.items():
-        print(name_package, version_package)
+
+    for name_package, version_lastest_package in list_packages_server.items():
+        for nombre_package, cuerpo_package in data["package_install"].items():
+            for version_package_local, cuerpoVersion_package in cuerpo_package.items():
+                if (version_package_local == "version_use"): 
+                    print(
+                        f"{' '*6}{name_package}{' '*(9 - len(name_package))}{cuerpoVersion_package}{' '*13}{version_lastest_package}"
+                        )
