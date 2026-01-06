@@ -43,10 +43,19 @@ def main_update(id_client, token_client):
     list_packages_server = result_packages["list_packages"]
 
 
-    for name_package, version_lastest_package in list_packages_server.items():
-        for nombre_package, cuerpo_package in data["package_install"].items():
-            for version_package_local, cuerpoVersion_package in cuerpo_package.items():
-                if (version_package_local == "version_use"): 
-                    print(
-                        f"{' '*6}{name_package}{' '*(9 - len(name_package))}{cuerpoVersion_package}{' '*13}{version_lastest_package}"
-                        )
+    for name_package, version_latest_package in list_packages_server.items():
+        paquete_local = data["package_install"].get(name_package)
+        if (not paquete_local):
+            continue 
+
+        version_local = paquete_local.get("version_use")
+        if (not version_local):
+            continue
+
+        print(
+            f"{' '*6}"
+            f"{name_package:<20}"
+            f"{version_local:<20}"
+            f"{version_latest_package}"
+        )
+
