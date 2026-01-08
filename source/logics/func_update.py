@@ -60,8 +60,8 @@ def main_update(id_client, token_client):
         print(f"{' '*6}[ CANCELADO ] Instalacion abortada por el usuario")
         sys.exit(0)
 
-    
-    destino = os.path.expanduser(f"~/.lpm/packages/{}/{version_pkg}")
-    os.makedirs(destino, exist_ok=True)
-    zip_path = os.path.join(destino, f"{namePackage}.zip")
+    for name_package, version_latest_package in list_packages_server.items():
+        destino = os.path.expanduser(f"~/.lpm/packages/{name_package}/{version_latest_package}")
+        os.makedirs(destino, exist_ok=True)
+        zip_path = os.path.join(destino, f"{name_package}.zip")
 
