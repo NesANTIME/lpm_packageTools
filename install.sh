@@ -2,9 +2,19 @@
 set -e
 
 INSTALL_DIR="$HOME/.lpm/lpm_"
-BIN_DIR="$HOME/.local/bin"
+BIN_DIR=""
+SO=""
+
+if [ -n "$TERMUX_VERSION" ] || [ -d "/data/data/com.termux" ]; then
+	BIN_DIR="$PREFIX/bin/"
+	SO="TERMUX | LINUX"
+else
+	BIN_DIR="/usr/bin/"
+	SO="LINUX OS"
+fi
 
 echo "[lpm] packages administrator"
+echo $SO
 
 
 if ! command -v python3 >/dev/null 2>&1;
@@ -16,7 +26,6 @@ fi
 echo ""
 
 mkdir -p "$INSTALL_DIR"
-mkdir -p "$BIN_DIR"
 
 echo "instalando..."
 cp -r source "$INSTALL_DIR/"

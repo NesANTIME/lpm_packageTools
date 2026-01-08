@@ -1,3 +1,4 @@
+import os
 import sys
 import requests
 
@@ -52,10 +53,15 @@ def main_update(id_client, token_client):
         if (not version_local):
             continue
 
-        print(
-            f"{' '*6}"
-            f"{name_package:<20}"
-            f"{version_local:<20}"
-            f"{version_latest_package}"
-        )
+        print(f"{' '*6}{name_package:<24}{version_local:<21}{version_latest_package}")
+
+    validation = input(f"\n{' '*4}[!] Desea continuar a la actualizacion de los packages? (y/n): ").strip().lower()
+    if validation not in ("y", "s"):
+        print(f"{' '*6}[ CANCELADO ] Instalacion abortada por el usuario")
+        sys.exit(0)
+
+    
+    destino = os.path.expanduser(f"~/.lpm/packages/{}/{version_pkg}")
+    os.makedirs(destino, exist_ok=True)
+    zip_path = os.path.join(destino, f"{namePackage}.zip")
 
