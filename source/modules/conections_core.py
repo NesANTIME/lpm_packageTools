@@ -35,3 +35,74 @@ def autentificacion_server(id_client, token_secret, type_consulta):
     print(f"{' '*6} Conexión autentificada con exito...")
 
     return session_id
+
+
+
+def peticiones_requests(peticion, timeoutt, autorModule_):
+
+    def auxiliary_controller(mode_, detalles):
+        if (autorModule_ == "fS_install"):
+            if (mode_):
+                message_animation(f"[!] Consultando por el paquete!",
+                    f"[ ERROR ] El paquete o la versión no existe", 3, 4
+                )
+                sys.exit(1)
+
+            terminate_url = "/client/search/install_package"
+            
+
+        elif (autorModule_ == "fI_install"):
+            if (mode_):
+                print(f"❌ Error de conexión: {detalles}")
+                if (detalles.response is not None):
+                    print(f"   Detalles: {detalles.response.text}")
+                sys.exit(1)
+
+            terminate_url = "/client/install_package"
+
+        
+        elif (autorModule_ == "fS-search"):
+            if (mode_):
+                message_animation(f"[!] Consultando por el paquete!", 
+                    f"[ ERROR ] El paquete no existe", 3, 4
+                )
+                sys.exit(1)
+
+            terminate_url = "/client/search_package"
+
+
+        elif (autorModule_ == "fS_update"):
+            if (mode_):
+                print(f"    [!] Error en la petición al servidor")
+                if detalles.response is not None:
+                    print(f"        {detalles.response.text}")
+                sys.exit(1)
+            
+            terminate_url = "/client/search/update_package"
+
+        
+        elif (autorModule_ == "fI-update"):
+            if (mode_):
+                print(f"    ❌ Error de conexión: {detalles}")
+                if detalles.response is not None:
+                    print(f"       {detalles.response.text}")
+                sys.exit(1)
+                
+            terminate_url = "/client/update_package"
+
+        return terminate_url
+    
+
+
+    
+    url = auxiliary_controller(False, None)
+
+    try:
+        response = requests.post(f"{URL_BASEDATA}{url}", json=peticion, timeout=timeoutt)
+        response.raise_for_status()
+        data = response.json()
+
+    except requests.exceptions.HTTPError as e:
+        auxiliary_controller(True, e)
+
+    return data
