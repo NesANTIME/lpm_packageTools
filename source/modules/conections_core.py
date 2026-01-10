@@ -71,7 +71,7 @@ def peticiones_requests(peticion, timeoutt, autorModule_):
             terminate_url = "/client/search_package"
 
 
-        elif (autorModule_ == "fS_update"):
+        elif (autorModule_ == "fS-update"):
             if (mode_):
                 print(f"    [!] Error en la petición al servidor")
                 if detalles.response is not None:
@@ -91,6 +91,9 @@ def peticiones_requests(peticion, timeoutt, autorModule_):
             terminate_url = "/client/update_package"
 
         return terminate_url
+   
+        else:
+    raise ValueError(f"autorModule_ desconocido: {autorModule_}")
     
 
 
