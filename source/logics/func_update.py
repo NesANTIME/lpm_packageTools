@@ -9,10 +9,6 @@ from source.logics.func_install import addPackage
 from source.modules.controller import func_userConfig
 from source.modules.conections_core import autentificacion_server, URL_BASEDATA
 
-
-# --------------------------------------------------
-# CONSULTA AL SERVIDOR LAS VERSIONES DISPONIBLES
-# --------------------------------------------------
 def funcDelivery_update(session_id, list_packages):
     try:
         response = requests.post(
@@ -33,9 +29,7 @@ def funcDelivery_update(session_id, list_packages):
         sys.exit(1)
 
 
-# --------------------------------------------------
-# FUNCIÓN PRINCIPAL DE ACTUALIZACIÓN
-# --------------------------------------------------
+
 def main_update(id_client, token_client):
     session_id = autentificacion_server(id_client, token_client, "upd")
     config = func_userConfig("r", None)
