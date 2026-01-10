@@ -124,7 +124,7 @@ def main_install(id_client, token_client, package):
         contenido = base64.b64decode(data["contenido_base64"])
 
         print()
-        bar_animation(4, "Instalando Package... ")
+        bar_animation(4, f"Instalando Package {namePackage}... ")
 
         with open(zip_path, "wb") as f:
             f.write(contenido)
